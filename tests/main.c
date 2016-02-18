@@ -11,6 +11,7 @@ void test_mstore__save(void);
 void test_atomic_spinlocks(void);
 void test_ftoa(void);
 void test_statsd_msg__parse_strings(void);
+void test_graphite_msg__parse_strings(void);
 
 int main(int argc, char *argv[])
 {
@@ -32,6 +33,9 @@ int main(int argc, char *argv[])
 
 	sput_enter_suite("statsd: packet parsing");
 	sput_run_test(test_statsd_msg__parse_strings);
+
+	sput_enter_suite("graphite: packet parsing");
+	sput_run_test(test_graphite_msg__parse_strings);
 
 	sput_finish_testing();
 	return sput_get_return_value();
