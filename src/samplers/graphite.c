@@ -110,9 +110,6 @@ static void graphite_run_recvmsg(struct brubeck_graphite *graphite, int sock)
                 brubeck_atomic_inc(&graphite->sampler.inflow);
 
                 if (brubeck_graphite_msg_parse(&msg, buffer, (size_t)res) < 0) {
-                        if (msg.key_len > 0)
-                                buffer[msg.key_len] = ':';
-
                         log_splunk("sampler=graphite event=bad_key key='%.*s' from=%s",
                                 res, buffer, inet_ntoa(reporter.sin_addr));
 
@@ -194,7 +191,7 @@ int brubeck_graphite_msg_parse(struct brubeck_graphite_msg *msg, char *buffer, s
                         msg->value = strtod(start, &buffer);
                 }
 
-                if (*buffer == '\n')
+                if (*buffer == '\0')
                     return 0;
                 if (*buffer != ' ')
                     return -1;
@@ -214,7 +211,7 @@ int brubeck_graphite_msg_parse(struct brubeck_graphite_msg *msg, char *buffer, s
                         ++buffer;
                 }
 
-                if (*buffer != '\n')
+                if (*buffer != '\0')
                         return -1;
         }
 }
