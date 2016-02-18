@@ -57,9 +57,6 @@ static void graphite_run_recvmmsg(struct brubeck_graphite *graphite, int sock)
                         int len = msgs[i].msg_len;
 
                         if (brubeck_graphite_msg_parse(&msg, buf, len) < 0) {
-                                if (msg.key_len > 0)
-                                        buf[msg.key_len] = ':';
-
                                 log_splunk("sampler=graphite event=bad_key key='%.*s'", len, buf);
                                 brubeck_server_mark_dropped(server);
                                 continue;
@@ -139,10 +136,10 @@ int brubeck_graphite_msg_parse(struct brubeck_graphite_msg *msg, char *buffer, s
 
                 msg->key = buffer;
                 msg->key_len = 0;
-                while (*buffer != ' ' && *buffer != '\0') {
+                while (*buffer != ' ' && *buffer != '\0' && *buffer !='\n') {
                     ++buffer;
                 }
-                if (*buffer == '\0')
+                if (*buffer == '\n' || *buffer == '\0')
                         return -1;
 
                 msg->key_len = buffer - msg->key;
@@ -191,7 +188,7 @@ int brubeck_graphite_msg_parse(struct brubeck_graphite_msg *msg, char *buffer, s
                         msg->value = strtod(start, &buffer);
                 }
 
-                if (*buffer == '\0')
+                if (*buffer == '\n')
                     return 0;
                 if (*buffer != ' ')
                     return -1;
@@ -211,9 +208,10 @@ int brubeck_graphite_msg_parse(struct brubeck_graphite_msg *msg, char *buffer, s
                         ++buffer;
                 }
 
-                if (*buffer != '\0')
+                if (*buffer != '\n')
                         return -1;
         }
+        return 0;
 }
 
 static void *graphite__thread(void *_in)

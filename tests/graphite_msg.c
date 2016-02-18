@@ -16,6 +16,6 @@ void test_graphite_msg__parse_strings(void)
 {
         struct brubeck_graphite_msg msg;
 
-        try_parse(&msg, "github.auth.fingerprint.sha1 1", 1);
-	try_parse(&msg, "github.auth.fingerprint.sha1 2 1455782855", 2);
+        try_parse(&msg, "github.auth.fingerprint.sha1 12\n", 12);
+	try_parse(&msg, "github.auth.fingerprint.sha1 2 1455782855\n", 2);
 }
