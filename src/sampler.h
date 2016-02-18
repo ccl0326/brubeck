@@ -4,6 +4,7 @@
 enum brubeck_sampler_t {
 	BRUBECK_SAMPLER_STATSD,
 	BRUBECK_SAMPLER_STATSD_SECURE,
+        BRUBECK_SAMPLER_GRAPHITE
 };
 
 struct brubeck_sampler {
@@ -30,11 +31,13 @@ static inline const char *brubeck_sampler_name(struct brubeck_sampler *sampler)
 	switch (sampler->type) {
 		case BRUBECK_SAMPLER_STATSD: return "statsd";
 		case BRUBECK_SAMPLER_STATSD_SECURE: return "statsd-secure";
+                case BRUBECK_SAMPLER_GRAPHITE: return "graphite";
 		default: return NULL;
 	}
 }
 
 #include "samplers/statsd.h"
+#include "samplers/graphite.h"
 
 #endif
 

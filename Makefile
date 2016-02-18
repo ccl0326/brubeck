@@ -25,6 +25,7 @@ SOURCES = \
 	src/sampler.c \
 	src/samplers/statsd-secure.c \
 	src/samplers/statsd.c \
+        src/samplers/graphite.c \
 	src/server.c \
 	src/setproctitle.c \
 	src/slab.c \

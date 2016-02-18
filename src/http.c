@@ -111,6 +111,7 @@ send_stats(struct brubeck_server *brubeck)
 		switch (sampler->type) {
 		case BRUBECK_SAMPLER_STATSD: sampler_name = "statsd"; break;
 		case BRUBECK_SAMPLER_STATSD_SECURE: sampler_name = "statsd_secure"; break;
+                case BRUBECK_SAMPLER_GRAPHITE: sampler_name = "graphite"; break;
 		default: assert(0);
 		}
 
